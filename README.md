@@ -10,10 +10,11 @@ pip install numpy
 pip install scipy
 
 pip install matplotlip
+
 python3 setup.py install --user in raysect-source/source
+
 python3 setup.py install --user in cherab-source/core
-cherab-source/solps should be installed from the official repository
-once it is installed do in cherab-source/solps/:
-python3 setup.py install --user
+
+python3 setup.py install --user in cherab-source/solps/
 
 pip install mendeleev
