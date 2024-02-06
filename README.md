@@ -1,5 +1,5 @@
 # CHERAB
-sudo apt-get update
+sudo apt-get update//
 sudo apt install python3-pip
 pip install -U cython==3.0a5
 pip install numpy
