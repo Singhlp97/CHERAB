@@ -1,0 +1,226 @@
+{
+   "_____________________________" : "_____________________________",
+
+   "__comment__": "test weighted emission",
+
+   "__comment__baserun": "h_alpha_camera",
+   "__comment__run":     "9229_equ@65ms_HW",
+   "baserun": "../input_150124",
+   "run":     "Fabio",
+
+   "_____________________________" : "_____________________________",
+
+   "raytracing": {
+
+      "observer": {
+
+         "surface_offset": 1.0E-02,
+         "spectral_bins":  1.0E+00,
+         "min_wavelength": 6.55E+02,
+         "max_wavelength": 6.56E+02,
+         "pixel_samples":  1.0E+04,
+
+         "specs": {
+
+            "__comment__": "PinholeCamera and VectorCamera currently supported",
+            "type":      "VectorCamera",
+            "nx_pixels": 1000,
+            "ny_pixels": 1520,
+            "fov":       90,
+
+            "calcam":{
+               "use_calcam_calibration": false,
+               "calcam_directory": "./calcam/H_alpha_camera/9229/"
+            },
+
+            "smart_pixelling": {
+               "use_smart_pixelling": false,
+               "case": "1.step=True.abs=False.scat=False.homemade=True.DiscreteToroidalMapper",
+               "file": "camera_shift.csv"
+            }
+         }
+         
+      },
+
+      "frame_sampler": {
+         "fraction":    2.0E-01,
+         "ratio":       1.0E+03,
+         "min_samples": 1.0E+02,
+         "cutoff":      1.0E-02
+      },
+
+      "max_ray_depth":     1E+02,
+      "max_render_passes": 1E+01,
+      "number_CPUs":       12,
+
+      "sampling": {
+
+         "step_uniform":      1E-04,
+
+         "use_step_function": true,
+         "step_max":          1E-02,
+         "step_min":          1E-04,
+         "alpha":             4.5E+01,
+         "beta":              3.0E+01,
+
+         "padding": {
+            "__comment__": "step_pad impacts sampling accuracy @ B2 mesh boundary",
+            "use_padding": false,
+            "step_pad":    1E-04
+         },
+
+         "resize": {
+            "__comment__":    "to be removed eventually",
+            "use_resize":     false,
+            "load":           false,
+            "save":           false,
+            "resize_factor":  1E+00
+         }   
+
+      }
+
+   },
+
+   "_____________________________" : "_____________________________",
+
+   "limiters": {
+      "number":            8,
+      "angular_width_deg": 7
+   },
+
+   "mesh": {
+
+      "wall_directory":       "mesh_absorbing_vtk/",
+      "observer_directory":   "mesh_observer_vtk/",
+      "periodicity":          22.5,
+      "periodicity_limiters": 60,
+
+      "reflection": {
+         "use_reflection": false,
+         "reflection_directory": "mesh_reflecting_vtk/",
+         "reflection_material":  "Conductor",
+         "__comment__": "other reflection-related data go here"
+      }
+
+   },  
+
+   "_____________________________" : "_____________________________",
+
+   "plasma": {
+
+      "__comment__":    "see cherab/solps/import_SOLPS_plasma.py",
+      "type_radiation": "total_radiation",
+      "__comment__type_radiation": "halpha_total_radiation",
+
+      "homemade": {
+
+         "use_homemade_emission":    false,
+
+         "sum_Amjuel_and_Boltzmann": false,
+         "doubleDensity_2ptModel":   false,
+
+         "nx": 100,
+         "ny": 150,
+
+         "neutral_density": {
+            "ng_sol":  5.6E+15,
+            "ng_core": 4E+14,
+            "smoothing_ng_FD": 1E-03,
+            "smoothing_ng_G":  1E-02,
+            "radial_reduction_G": 1.0E-02,
+            "peak_G": 3.75E+18,
+            "r0_G":   1.77E-01,
+            "z01_G":  2.00E-01,
+            "z02_G": -2.00E-01
+         },
+
+         "plasma_density": {
+            "npmax": 2.6E+19,
+            "npsep": 1E+19,
+            "npmin": 1E+14,
+            "lnpsi": 1E-00,
+            "lnrho": 2E-01            
+         },
+
+         "plasma_temperature": {
+            "Tpmax": 2.5E+03,
+            "Tpsep": 1E+02,
+            "Tpmin": 1E-01,
+            "ltpsi": 1E-01,
+            "ltrho": 2E-01
+         }
+      },
+
+      "ASTRA": {
+         "use_ASTRA_emission": false,
+         "ASTRA_directory":    "ASTRA_data/",
+         "__comment__ASTRA_file":         "33009229_RUN5_Prof_ne_1e19m-3_Te_keV_nh_m-3_Halpha_phot_s-1_cm-3_t=0.017s.csv",
+         "__comment__geqdsk_name":        "ST40_9229_EFIT_BEST",
+         "__comment__geqdsk_time":        "16p97ms",
+         "ASTRA_file":         "33009229_RUN5_Prof_ne_1e19m-3_Te_keV_nh_m-3_Halpha_phot_s-1_cm-3_t=0.065s.csv",
+         "geqdsk_name":        "ST40_9229_EFIT_BEST",
+         "geqdsk_time":        "65p89ms",
+         "use_ASTRA_rescaling":    true,
+         "__comment__ASTRA_rescaling_L": 2.5E-02,
+         "__comment__ASTRA_rescaling_r0": 3.07E-01,
+         "ASTRA_rescaling_L": 2.5E-02,
+         "ASTRA_rescaling_r0": 3.07E-01
+      },
+
+      "SOLPS": {
+
+         "SOLPS_directory": "SOLPS_data",
+         "rqbrm": false,
+         "rqrad": true,
+         "use_B2_emission":     true,
+         "use_EIRENE_emission": false,
+         
+         "use_extra_emission":  false,
+         "extra_directory":     "h_alpha_camera/input/NEW_20220623.Pump_0.9.New.TRANS",
+
+         "weights":{
+            "use_weighted_emission": false,
+            "weight_main_emission":  1.0,
+            "weight_extra_emission": 1.0
+         },
+
+         "artifact":{
+            "fix_artifact":    false,
+            "start_index":     40,
+            "end_index":       60,
+            "threshold_value": 1E+20,
+            "new_value":       1E+00
+         }
+      },
+
+      "__comment__": "options: AxisymmetricMapper or DiscreteToroidalMapper",
+      "Mapper": "AxisymmetricMapper",
+
+      "absorption": {
+         "use_absorption_function": false,
+         "absorption_cross_section_H23": 1.195E-14
+      },
+
+      "scattering": {
+         "use_scattering_function": false,
+         "collisions_max":          1000000,
+         "scattering_cross_section_H23": 1.195E-14
+      }
+   },
+
+   "_____________________________" : "_____________________________",
+
+   "plotting": {
+      "plot_total_emission":      false,
+      "plot_ASTRA_emission":      false,
+      "plot_homemade_emission":   false,
+      "plot_absorption_function": false,
+      "plot_step_function":       false,
+      "plot_smart_pixelling":     false,
+      "plot_wall":                true,
+      "save_figures":             true
+   }
+
+}
+
+
